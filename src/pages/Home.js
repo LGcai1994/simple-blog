@@ -25,7 +25,7 @@ const Home = ({ isAuth }) => {
 
     return (
         <div className='homePage'>
-            {postLists.map((post) => (
+            {postLists && postLists.map((post) => (
                 <div className='post' key={post.id}>
                     <div className='postHeader'>
                         <div className='title'>
