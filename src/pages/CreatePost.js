@@ -10,7 +10,17 @@ const CreatePost = ({ isAuth }) => {
 
     const postsCollectionRef = collection(db, 'posts')
     const handleSubmit = async () => {
-        await addDoc(postsCollectionRef, { title: title, context: postText, author: { name: auth.currentUser.displayName, id: auth.currentUser.uid } })
+        const timestamp = Date.now()
+
+        await addDoc(postsCollectionRef, {
+            title: title,
+            context: postText,
+            author: {
+                name: auth.currentUser.displayName,
+                id: auth.currentUser.uid
+            },
+            timestamp: timestamp
+        })
         navigate('/')
     }
 
@@ -19,7 +29,7 @@ const CreatePost = ({ isAuth }) => {
             navigate('/login')
         }
     }, [])
-    
+
     return (
         <div className='createPostPage'>
             <div className='cpContainer'>

@@ -13,15 +13,17 @@ const Home = ({ isAuth }) => {
         await (deleteDoc(postDoc))
         window.location.reload()
     }
-    useEffect(() => {
-        const getPosts = async () => {
-            const data = await getDocs(postsCollectionRef);
-            setPostLists(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-        };
-        getPosts();
-    }, []);
 
-    console.log(postLists)
+    const getPosts = async () => {
+        const data = await getDocs(postsCollectionRef);
+        const rawdata = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        const sorteddata = rawdata.sort((a,b) => b.timestamp - a.timestamp)
+        setPostLists(sorteddata);
+    }
+
+    useEffect(() => {
+        getPosts()
+    }, [])
 
     return (
         <div className='homePage'>
@@ -45,6 +47,7 @@ const Home = ({ isAuth }) => {
                         {post.context}
                     </div>
                     <h3>@{post.author.name}</h3>
+                    <h3>{new Date(post.timestamp).toLocaleString().slice(0,-3)}</h3>
                 </div>
             ))}
         </div>
