@@ -11,21 +11,21 @@ const Home = ({ isAuth }) => {
     const handleDeletePost = async (id) => {
         const postDoc = doc(db, 'posts', id)
         await (deleteDoc(postDoc))
+        window.location.reload()
     }
-    const getPosts = async () => {
-        const data = await getDocs(postsCollectionRef)
-        setPostLists(data.docs.map((doc) => (
-            { ...doc.data(), id: doc.id }
-        )))
-    }
-
     useEffect(() => {
-        getPosts()
-    }, [handleDeletePost])
+        const getPosts = async () => {
+            const data = await getDocs(postsCollectionRef);
+            setPostLists(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        };
+        getPosts();
+    }, []);
+
+    console.log(postLists)
 
     return (
         <div className='homePage'>
-            {postLists && postLists.map((post) => (
+            {postLists.length > 0 && postLists.map((post) => (
                 <div className='post' key={post.id}>
                     <div className='postHeader'>
                         <div className='title'>
